@@ -1,28 +1,46 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
 
-#include <ViennaRNA/mfe.h>
 #include <ViennaRNA/fold.h>
+#include <ViennaRNA/part_func.h>
 #include <ViennaRNA/utils/basic.h>
- 
-int main()
-{
+
+int main(){
   /* The RNA sequence */
-  char  *seq = "GAGUAGUGGAACCAGGCUAUGUUUGUGACUCGCAGACUAACA";
- 
-  /* allocate memory for MFE structure (length + 1) */
-  char  *structure = (char *)vrna_alloc(sizeof(char) * (strlen(seq) + 1));
- 
-  /* predict Minmum Free Energy and corresponding secondary structure */
-  float mfe = vrna_fold(seq, structure);
- 
-  /* print sequence, structure and MFE */
-  printf("%s\n%s [ %6.2f ]\n", seq, structure, mfe);
- 
+  char      *seq = "GAGUAGUGGAACCAGGCUAUGUUUGUGACUCGCAGACUAACA";
+
+  /* allocate memory for pairing propensity string (length + 1) */
+  char      *propensity = (char *)vrna_alloc(sizeof(char) * (strlen(seq) + 1));
+
+  /* pointers for storing and navigating through base pair probabilities */
+  vrna_ep_t *ptr, *pair_probabilities = NULL;
+
+  float     en = vrna_pf_fold(seq, propensity, &pair_probabilities);
+
+  /* print sequence, pairing propensity string and ensemble free energy */
+  double unpairdness[strlen(seq)];
+  int a;
+  int b;
+  double c;
+
+  for (ptr = pair_probabilities; ptr->i != 0; ptr++){
+    a = (*ptr).i;
+    b = (*ptr).j;
+    c = (*ptr).p;
+    unpairdness[a-1] += (double)c;
+    unpairdness[b-1] += (double)c;
+    if(a==38 || b == 38){
+      printf("%g\n", c);
+    }
+  }
+
+  printf("%g\n", unpairdness[37]);
   /* cleanup memory */
-  free(structure);
- 
+  free(pair_probabilities);
+  free(propensity);
+
   return 0;
 }
 
