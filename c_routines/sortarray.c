@@ -44,7 +44,7 @@ void sortArray(int arraySize, double *array)
     float     en = vrna_pf_fold(seq, propensity, &pair_probabilities);
 
     /* print sequence, pairing propensity string and ensemble free energy */
-    static double unpairdness[42];
+    double unpairdness[arraySize];
     int a;
     int b;
     double c;
