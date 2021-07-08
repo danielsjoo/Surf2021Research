@@ -48,6 +48,13 @@ void sortArray(int arraySize, double *array)
     int a;
     int b;
     double c;
+    
+    a = 0;
+    b =  0;
+    c = 0;
+    for(int i = 0; i<arraySize; i++){
+        unpairdness[i] = 0.0;
+    }      
 
     for (ptr = pair_probabilities; ptr->i != 0; ptr++){
         a = (*ptr).i;
@@ -69,3 +76,5 @@ void sortArray(int arraySize, double *array)
     free(pair_probabilities);
     free(propensity);
 }
+
+// g++ -shared -fPIC -o libsortarray.so sortarray.c -pthread -I/usr/local/include -I/usr/local/include/ViennaRNA -L/usr/local/lib -fno-lto -Wl,-fno-lto -lRNA -fopenmp -lpthread -lstdc++ -lm -ldl

@@ -17,7 +17,7 @@ def helper(sequence):
             x.append(2)
         elif char == "C":
             x.append(3)
-        elif char == "U":
+        else:
             x.append(4)
     array_size = len(sequence)
     x = (ctypes.c_double * array_size)(*x)
