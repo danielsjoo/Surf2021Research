@@ -24,11 +24,13 @@ def helper(sequence):
     libsortarray.sortArray(array_size, x)
     return x
 
+
 def return_up(sequence):
     x = []
     for i in helper(sequence)[:]:
         x.append(i)
     return x
+
 
 if __name__ == '__main__':
     seq = "GAGUAGUGGAACCAGGCUAUGUUUGUGACUCGCAGACUAACA"
